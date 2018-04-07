@@ -12,18 +12,34 @@ Window {
 
     ColumnLayout {
         anchors.fill: parent
-
-        TextField {
-            id: urlTextField
-            Layout.preferredWidth: parent.width
-            Keys.onReturnPressed: webView.url = text
+        RowLayout{
+            ToolButton{
+                text: "<"
+                onClicked: webView.goBack()
+                enabled: webView.canGoBack
+            }
+            ToolButton{
+                text: ">"
+                onClicked: webView.goForward()
+                enabled: webView.canGoForward
+            }
+            TextField {
+                Layout.fillWidth: true
+                Keys.onReturnPressed: webView.url = text
+                focus: true
+                text: webView.url
+                BusyIndicator {
+                    anchors {right: parent.right; verticalCenter: parent.verticalCenter}
+                    running: webView.loading
+                    z: 2
+                }
+            }
         }
 
         WebView{
             id: webView
             Layout.preferredWidth: parent.width
             Layout.fillHeight: true
-            url: urlTextField.text
         }
     }
 }
